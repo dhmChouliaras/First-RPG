@@ -53,6 +53,9 @@ func _physics_process(delta):
 			attack_state(delta)
 
 func move_state(delta):
+#	set player level
+	GlobalPlayerStats.level = character_stats.LEVEL
+	
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -81,6 +84,7 @@ func move_state(delta):
 func roll_state(delta):
 	velocity = roll_vector * character_stats.ROLL_SPEED
 	animationState.travel("Roll")
+	hurtbox.start_invicibility(0.6,true)
 	move()
 
 func attack_state(delta):
@@ -97,7 +101,6 @@ func attack_animation_finished():
 func roll_animation_finished():
 	state = MOVE
 
-
 func _on_Hurtbox_area_entered(area):
 	stats.health -= area.damage
 	hurtbox.start_invicibility(0.6)
@@ -105,14 +108,16 @@ func _on_Hurtbox_area_entered(area):
 	var player_hurt_sound = PlayerHurtSound.instance()
 	get_tree().current_scene.add_child(player_hurt_sound)
 
-
-func _on_Hurtbox_invicibility_started():
-	blink_animation_player.play("Start")
-
+func _on_Hurtbox_invicibility_started(player_rolling):
+	if(!player_rolling):
+		blink_animation_player.play("Start")
 
 func _on_Hurtbox_invicibility_ended():
 	blink_animation_player.play("Stop")
 
 func _on_give_exp(value):
 	character_stats.EXP += value
+	if character_stats.EXP > 10:
+		character_stats.LEVEL += 1
+		Events.emit_signal("lvl_changed", true);
 	print(character_stats.EXP)

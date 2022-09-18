@@ -93,7 +93,7 @@ func _on_Stats_no_health():
 	enemyDeathEffect.global_position = global_position
 	Events.emit_signal("give_exp", 10);
 
-func _on_Hurtbox_invicibility_started():
+func _on_Hurtbox_invicibility_started(false):
 	animation_player.play("Start")
 
 func _on_Hurtbox_invicibility_ended():

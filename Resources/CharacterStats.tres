@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Resources/CharacterStats.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+ACCELERATION = 500
+MAX_SPEED = 100
+FRICTION = 600
+ROLL_SPEED = 120
+MAX_HEALTH = 10
+HEALTH = 10
+EXP = 0
